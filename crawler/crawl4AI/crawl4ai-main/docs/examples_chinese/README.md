@@ -16,11 +16,22 @@
 ### ⚙️ 高级功能
 - `browser_optimization_example.py` - 浏览器性能优化
 - `hooks_example.py` - 钩子函数使用示例
+- `extraction_strategies_examples.py` - 提取策略示例
+- `deepcrawl_example.py` - 深度爬取示例
+- `table_extraction_example.py` - 表格提取示例
+- `llm_extraction_openai_pricing.py` - LLM提取示例
+- `proxy_rotation_demo.py` - 代理轮换示例
 - `进阶示例.md` - 高级功能详细教程
 
 ### 🤖 自适应爬虫
 - `adaptive_crawling/basic_usage.py` - 自适应爬虫基础使用
+- `adaptive_crawling/advanced_configuration.py` - 高级配置
 - `adaptive_crawling/README.md` - 自适应爬虫详细说明
+
+### 📄 文档资料
+- `快速开始指南.md` - 新手入门指导
+- `进阶示例.md` - 高级功能使用指南
+- `迁移完成总结.md` - 迁移工作总结报告
 
 ## 🛠️ 环境准备
 

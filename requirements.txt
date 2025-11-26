@@ -1,0 +1,52 @@
+# 基础爬虫库
+requests>=2.31.0
+urllib3>=2.0.0
+
+# JavaScript执行
+PyExecJS>=1.5.1
+
+# 数据解析
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+html2text>=2020.1.16
+
+# 浏览器自动化
+playwright>=1.40.0
+selenium>=4.15.0
+DrissionPage>=4.0.0
+
+# AI爬虫框架
+crawl4ai>=0.7.6
+
+# 数据处理
+pandas>=2.0.0
+numpy>=1.24.0
+
+# 异步支持
+aiohttp>=3.9.0
+asyncio>=3.4.3
+
+# 加密解密
+cryptography>=41.0.0
+pycryptodome>=3.19.0
+
+# 配置管理
+python-dotenv>=1.0.0
+pyyaml>=6.0.0
+
+# 日志
+loguru>=0.7.0
+
+# 数据库（可选）
+sqlalchemy>=2.0.0
+pymongo>=4.6.0
+redis>=5.0.0
+
+# 工具
+fake-useragent>=1.4.0
+user-agents>=2.2.0
+
+# 开发工具
+pytest>=7.4.0
+black>=23.0.0
+flake8>=6.0.0

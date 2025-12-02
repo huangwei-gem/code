@@ -47,8 +47,13 @@ if %ERRORLEVEL% neq 0 (
 )
 echo.
 
+:: Ensure we're using the correct HTTPS URL
+echo 5. Checking remote repository URL...
+git remote set-url origin https://github.com/huangwei-gem/code
+echo.
+
 :: Push to remote repository automatically
-echo 5. Pushing to remote repository...
+echo 6. Pushing to remote repository...
 git push origin master
 echo.
 if %ERRORLEVEL% equ 0 (
@@ -60,11 +65,8 @@ if %ERRORLEVEL% equ 0 (
     echo 2. Git SSL configuration
     echo 3. Your GitHub credentials
     echo.
-    echo Solution 1: Disable SSL verification temporarily:
+    echo Solution: Disable SSL verification temporarily:
     echo git config --global http.sslVerify false
-    echo.
-    echo Solution 2: Use SSH instead of HTTPS:
-    echo git remote set-url origin git@github.com:huangwei-gem/code.git
 )
 
 echo.

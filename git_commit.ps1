@@ -43,8 +43,13 @@ if ($LASTEXITCODE -ne 0) {
 }
 Write-Host ""
 
+# Ensure we're using the correct HTTPS URL
+Write-Host "5. Checking remote repository URL..."
+git remote set-url origin https://github.com/huangwei-gem/code
+Write-Host ""
+
 # Push to remote repository automatically
-Write-Host "5. Pushing to remote repository..."
+Write-Host "6. Pushing to remote repository..."
 git push origin master
 if ($LASTEXITCODE -eq 0) {
     Write-Host "Push successful!"
@@ -55,11 +60,8 @@ if ($LASTEXITCODE -eq 0) {
     Write-Host "2. Git SSL configuration" -ForegroundColor Yellow
     Write-Host "3. Your GitHub credentials" -ForegroundColor Yellow
     Write-Host "" -ForegroundColor White
-    Write-Host "Solution 1: Disable SSL verification temporarily:" -ForegroundColor Cyan
+    Write-Host "Solution: Disable SSL verification temporarily:" -ForegroundColor Cyan
     Write-Host "git config --global http.sslVerify false" -ForegroundColor Green
-    Write-Host "" -ForegroundColor White
-    Write-Host "Solution 2: Use SSH instead of HTTPS:" -ForegroundColor Cyan
-    Write-Host "git remote set-url origin git@github.com:huangwei-gem/code.git" -ForegroundColor Green
 }
 
 Write-Host ""

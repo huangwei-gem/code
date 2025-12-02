@@ -63,7 +63,14 @@ echo Files committed successfully
 echo.
 echo Pushing to remote repository...
 
-:: Try to push with SSL verification disabled if regular push fails
+:: First try to pull remote changes
+echo Pulling remote changes first...
+git pull origin %currentBranch%
+if %errorlevel% neq 0 (
+    echo Pull failed, trying push anyway...
+)
+
+:: Then push to remote repository
 git push origin %currentBranch%
 if %errorlevel% neq 0 (
     echo Regular push failed, trying with SSL verification disabled...

@@ -2,6 +2,7 @@
 
 :: Git One-Click Commit Script (Batch Version)
 :: For Windows Command Prompt
+:: 一键提交，自动使用日期作为提交信息
 
 :: Set code page to UTF-8
 chcp 65001 > nul
@@ -22,15 +23,6 @@ echo 1. Checking current status...
 git status
 echo.
 
-:: Ask to continue
-echo Continue with commit? (y/n)
-set /p "continue="
-if /i not "%continue%"=="y" (
-    echo Operation cancelled
-    pause
-    exit /b 0
-)
-
 :: Add all files
 echo 2. Adding all modified files...
 git add .
@@ -41,13 +33,9 @@ if %ERRORLEVEL% neq 0 (
 )
 echo.
 
-:: Ask for commit message
-echo 3. Enter commit message:
-set /p "commit_msg="
-if "%commit_msg%"=="" (
-    echo Commit message is empty, using default message.
-    set "commit_msg=Auto commit - %date:~0,4%-%date:~5,2%-%date:~8,2% %time:~0,2%:%time:~3,2%:%time:~6,2%"
-)
+:: Use date as commit message
+set "commit_msg=Auto commit - %date:~0,4%-%date:~5,2%-%date:~8,2% %time:~0,2%:%time:~3,2%:%time:~6,2%"
+echo 3. Using commit message: %commit_msg%
 
 :: Execute commit
 echo 4. Executing commit...
@@ -59,30 +47,24 @@ if %ERRORLEVEL% neq 0 (
 )
 echo.
 
-:: Ask to push
-echo 5. Push to remote repository? (y/n)
-set /p "push="
-if /i "%push%"=="y" (
-    echo Pushing...
-    git push origin master
-    echo.
-    if %ERRORLEVEL% equ 0 (
-        echo Push successful!
-    ) else (
-        echo Push failed! Error: SSL certificate problem or network issue.
-        echo Please check:
-        echo 1. Your network connection
-        echo 2. Git SSL configuration
-        echo 3. Your GitHub credentials
-        echo.
-        echo Solution 1: Disable SSL verification temporarily:
-        echo git config --global http.sslVerify false
-        echo.
-        echo Solution 2: Use SSH instead of HTTPS:
-        echo git remote set-url origin git@github.com:huangwei-gem/code.git
-    )
+:: Push to remote repository automatically
+echo 5. Pushing to remote repository...
+git push origin master
+echo.
+if %ERRORLEVEL% equ 0 (
+    echo Push successful!
 ) else (
-    echo Skipping push.
+    echo Push failed! Error: SSL certificate problem or network issue.
+    echo Please check:
+    echo 1. Your network connection
+    echo 2. Git SSL configuration
+    echo 3. Your GitHub credentials
+    echo.
+    echo Solution 1: Disable SSL verification temporarily:
+    echo git config --global http.sslVerify false
+    echo.
+    echo Solution 2: Use SSH instead of HTTPS:
+    echo git remote set-url origin git@github.com:huangwei-gem/code.git
 )
 
 echo.

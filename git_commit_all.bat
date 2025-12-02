@@ -62,12 +62,20 @@ echo Files committed successfully
 
 echo.
 echo Pushing to remote repository...
+
+:: Try to push with SSL verification disabled if regular push fails
 git push origin %currentBranch%
 if %errorlevel% neq 0 (
-    echo Error: Push failed!
-    pause
-    exit /b 1
+    echo Regular push failed, trying with SSL verification disabled...
+    git -c http.sslVerify=false push origin %currentBranch%
+    if %errorlevel% neq 0 (
+        echo Error: Push failed!
+        echo You may need to configure Git SSL settings or check your network connection.
+        pause
+        exit /b 1
+    )
 )
+
 echo Push successful!
 
 echo.

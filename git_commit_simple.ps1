@@ -74,3 +74,4 @@ Write-Host "所有操作完成!" -ForegroundColor Green
 Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host "请按任意键继续..." -ForegroundColor Yellow
 $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+}

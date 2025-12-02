@@ -26,15 +26,11 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-REM 生成带时间戳的提交信息
-for /f "tokens=2 delims==" %%a in ('wmic OS Get localdatetime /value') do set "dt=%%a"
-set "YYYY=%dt:~0,4%"
-set "MM=%dt:~4,2%"
-set "DD=%dt:~6,2%"
-set "HH=%dt:~8,2%"
-set "Min=%dt:~10,2%"
-set "Sec=%dt:~12,2%"
-set "default_commit_msg=自动提交 %YYYY%-%MM%-%DD% %HH%:%Min%:%Sec%"
+REM 生成带时间戳的提交信息 - 使用date和time命令替代wmic
+for /f "tokens=2 delims==" %%a in ('date /t') do set "today=%%a"
+set "today=%today: =%"
+for /f "tokens=1 delims=," %%a in ('time /t') do set "now=%%a"
+set "default_commit_msg=自动提交 %today% %now%"
 
 REM 提示用户输入提交信息或使用默认值
 echo.
@@ -56,7 +52,7 @@ if %errorlevel% neq 0 (
 REM 推送到远程仓库
 echo.
 echo 正在推送代码到远程仓库...
-git push origin main
+git push origin master
 if %errorlevel% neq 0 (
     echo 错误：推送失败！
     echo 请检查网络连接和GitHub权限

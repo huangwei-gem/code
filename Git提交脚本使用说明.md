@@ -1,4 +1,4 @@
-# Git一键提交脚本使用说明
+# Git一键提交脚本使用说明 (更新版)
 
 这个仓库现在包含了一键提交所有文件到GitHub的脚本，方便你快速提交代码。
 
@@ -24,9 +24,10 @@ powershell -ExecutionPolicy Bypass -File git_commit_all.ps1 -commitMessage "你�
 powershell -ExecutionPolicy Bypass -File git_commit_all.ps1 -push:$false
 ```
 
-### 2. git_commit_all.bat (CMD批处理版本)
+### 2. git_commit_all_fixed.bat (修复版CMD批处理版本)
 - **功能**: 自动添加所有文件并提交到GitHub仓库
 - **特点**:
+  - 修复了中文编码问题
   - 交互式操作，询问提交信息
   - 可选择是否推送到远程仓库
   - 显示文件变更状态
@@ -34,10 +35,23 @@ powershell -ExecutionPolicy Bypass -File git_commit_all.ps1 -push:$false
 **使用方法**:
 ```cmd
 # 直接双击运行或命令行执行
-git_commit_all.bat
+git_commit_all_fixed.bat
 ```
 
-### 3. git_commit_large_files.ps1 (增强版 - 支持大文件)
+### 3. git_commit_all_en.bat (英文版CMD批处理版本)
+- **功能**: 英文界面的自动提交脚本
+- **特点**:
+  - 全英文界面，避免编码问题
+  - 交互式操作
+  - 可选择是否推送到远程仓库
+
+**使用方法**:
+```cmd
+# 直接双击运行或命令行执行
+git_commit_all_en.bat
+```
+
+### 4. git_commit_large_files.ps1 (增强版 - 支持大文件)
 - **功能**: 支持大文件处理和Git LFS
 - **特点**:
   - 自动检测大文件（默认>50MB）
@@ -81,10 +95,11 @@ git lfs install
 
 ## 使用建议
 
-1. **日常使用**: 推荐使用 `git_commit_all.bat`，操作简单直观
-2. **自动化脚本**: 推荐使用 `git_commit_all.ps1`，功能更强大
-3. **大文件项目**: 使用 `git_commit_large_files.ps1`，自动处理大文件
-4. **提交频率**: 建议经常提交，保持代码的备份和版本历史
+1. **日常使用**: 推荐使用 `git_commit_all_fixed.bat`，操作简单直观且修复了编码问题
+2. **英文环境**: 推荐使用 `git_commit_all_en.bat`，避免编码问题
+3. **自动化脚本**: 推荐使用 `git_commit_all.ps1`，功能更强大
+4. **大文件项目**: 使用 `git_commit_large_files.ps1`，自动处理大文件
+5. **提交频率**: 建议经常提交，保持代码的备份和版本历史
 
 ## 注意事项
 
@@ -98,7 +113,9 @@ git lfs install
 ```
 c:\Users\35796\Documents\code\
 ├── git_commit_all.ps1          # PowerShell一键提交脚本
-├── git_commit_all.bat          # CMD一键提交脚本
+├── git_commit_all.bat          # 原始CMD一键提交脚本（可能有编码问题）
+├── git_commit_all_fixed.bat    # 修复版CMD一键提交脚本
+├── git_commit_all_en.bat       # 英文版CMD一键提交脚本
 ├── git_commit_large_files.ps1  # 增强版脚本（支持LFS）
 ├── .gitignore                  # Git忽略文件配置
 ├── README.md                   # 项目说明

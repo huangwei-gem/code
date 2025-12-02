@@ -1,6 +1,7 @@
 ﻿@echo off
+
 REM 解决中文乱码问题 - 设置为UTF-8编码
-chcp 65001 >nul
+@chcp 65001 >nul
 
 echo ============================================
 echo 一键Git提交脚本
@@ -26,10 +27,9 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-REM 生成带时间戳的提交信息 - 使用date和time命令替代wmic
-for /f "tokens=2 delims==" %%a in ('date /t') do set "today=%%a"
-set "today=%today: =%"
-for /f "tokens=1 delims=," %%a in ('time /t') do set "now=%%a"
+REM 生成带时间戳的提交信息 - 使用更可靠的方式
+for /f "tokens=1-3 delims=/ " %%a in ('date /t') do set "today=%%c-%%a-%%b"
+for /f "tokens=1-2 delims=: " %%a in ('time /t') do set "now=%%a:%%b"
 set "default_commit_msg=自动提交 %today% %now%"
 
 REM 提示用户输入提交信息或使用默认值

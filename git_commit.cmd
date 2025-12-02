@@ -1,6 +1,6 @@
 @echo off
-REM 一键Git提交脚本
-REM 提交到 https://github.com/huangwei-gem/code
+REM 解决中文乱码问题 - 设置为UTF-8编码
+chcp 65001 >nul
 
 echo ============================================
 echo 一键Git提交脚本

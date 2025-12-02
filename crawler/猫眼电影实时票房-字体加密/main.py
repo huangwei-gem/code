@@ -1,5 +1,5 @@
 import requests
-
+import json
 cookies = {
     '_lxsdk_cuid': '19adef88ddac8-04464c569ebf78-15313374-fa000-19adef88ddac8',
     '_lxsdk': '19adef88ddac8-04464c569ebf78-15313374-fa000-19adef88ddac8',
@@ -37,5 +37,5 @@ params = {
 
 response = requests.get('https://piaofang.maoyan.com/dashboard-ajax/movie', params=params, cookies=cookies, headers=headers)
 
-
-print(response.text)
+print(response.)
+print(response['movieList']['list'])

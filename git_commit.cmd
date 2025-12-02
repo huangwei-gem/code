@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 REM 解决中文乱码问题 - 设置为UTF-8编码
 chcp 65001 >nul
 

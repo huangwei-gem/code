@@ -37,5 +37,5 @@ params = {
 
 response = requests.get('https://piaofang.maoyan.com/dashboard-ajax/movie', params=params, cookies=cookies, headers=headers)
 
-print(response.)
-print(response['movieList']['list'])
+json_data = response.json()
+print(json_data['movieList']['list'])

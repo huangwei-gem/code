@@ -18,6 +18,21 @@ if not exist .git (
     exit /b 1
 )
 
+REM Check git remote configuration
+echo Checking git remote configuration...
+git remote -v > git_remote_temp.txt
+set /p REMOTE_URL=<git_remote_temp.txt
+del git_remote_temp.txt
+
+REM Check if remote URL contains proxy (common issue)
+echo %REMOTE_URL% | findstr /i "xget.xi-xu.me" >nul
+if %errorlevel% equ 0 (
+    echo Warning: Detected proxy URL in git remote configuration!
+    echo This may cause connection issues. If push fails, check your git proxy settings.
+    echo To remove proxy settings: git config --global --unset url.https://xget.xi-xu.me/gh/.insteadof
+    echo.
+)
+
 REM Add all changed files
 echo Adding all changed files...
 git add .

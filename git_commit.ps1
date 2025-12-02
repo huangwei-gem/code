@@ -7,8 +7,12 @@ git add .
 Write-Host "正在提交代码..." -ForegroundColor Green
 git commit -m "初始提交：添加爬虫项目代码"
 
-Write-Host "提交完成！" -ForegroundColor Green
+Write-Host "正在配置远程仓库..." -ForegroundColor Green
+git remote add origin https://github.com/huangwei-gem/code
+
+Write-Host "正在推送到远程仓库..." -ForegroundColor Green
+git push -u origin master
+
+Write-Host "代码提交和推送完成！" -ForegroundColor Green
 Write-Host ""
-Write-Host "如果需要推送到远程仓库，请手动添加远程仓库并推送" -ForegroundColor Yellow
-Write-Host "例如: git remote add origin <你的远程仓库URL>" -ForegroundColor Yellow
-Write-Host "     git push -u origin master" -ForegroundColor Yellow
+Write-Host "你的代码已经推送到：https://github.com/huangwei-gem/code" -ForegroundColor Green

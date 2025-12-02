@@ -1,3 +1,0 @@
-DrissionPage # https://drissionpage.cn/get_start/import 作者为中国人有中文文档❤️
-requests
-beautifulsoup4

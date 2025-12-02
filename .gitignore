@@ -76,3 +76,19 @@ config.ini
 downloads/
 images/
 files/
+
+# 大文件
+*.zip
+*.rar
+*.7z
+*.tar.gz
+*.mp4
+*.mp3
+*.avi
+*.mov
+
+# DrissionPage项目文件
+crawler/DrissionPage/dp项目/
+*.xlsx
+*.docx
+*.pptx

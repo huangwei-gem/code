@@ -1,0 +1,7 @@
+Temp/
+Projects/
+Logs/
+Resources/
+.vscode
+__pycache__
+sys_path_append.json

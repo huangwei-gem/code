@@ -61,10 +61,20 @@ if ($push -match "^[yY]$") {
     if ($LASTEXITCODE -eq 0) {
         Write-Host "Push successful!"
     } else {
-        Write-Host "Push failed. Check network or permissions."
+        Write-Host "Push failed! Error: SSL certificate problem or network issue." -ForegroundColor Red
+        Write-Host "Please check:" -ForegroundColor Yellow
+        Write-Host "1. Your network connection" -ForegroundColor Yellow
+        Write-Host "2. Git SSL configuration" -ForegroundColor Yellow
+        Write-Host "3. Your GitHub credentials" -ForegroundColor Yellow
+        Write-Host "" -ForegroundColor White
+        Write-Host "Solution 1: Disable SSL verification temporarily:" -ForegroundColor Cyan
+        Write-Host "git config --global http.sslVerify false" -ForegroundColor Green
+        Write-Host "" -ForegroundColor White
+        Write-Host "Solution 2: Use SSH instead of HTTPS:" -ForegroundColor Cyan
+        Write-Host "git remote set-url origin git@github.com:huangwei-gem/code.git" -ForegroundColor Green
     }
 } else {
-    Write-Host "Skipping push"
+    Write-Host "Skipping push" -ForegroundColor Gray
 }
 
 Write-Host ""

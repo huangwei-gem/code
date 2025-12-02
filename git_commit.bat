@@ -69,7 +69,17 @@ if /i "%push%"=="y" (
     if %ERRORLEVEL% equ 0 (
         echo Push successful!
     ) else (
-        echo Push failed. Check network or permissions.
+        echo Push failed! Error: SSL certificate problem or network issue.
+        echo Please check:
+        echo 1. Your network connection
+        echo 2. Git SSL configuration
+        echo 3. Your GitHub credentials
+        echo.
+        echo Solution 1: Disable SSL verification temporarily:
+        echo git config --global http.sslVerify false
+        echo.
+        echo Solution 2: Use SSH instead of HTTPS:
+        echo git remote set-url origin git@github.com:huangwei-gem/code.git
     )
 ) else (
     echo Skipping push.

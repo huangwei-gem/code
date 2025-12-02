@@ -54,31 +54,50 @@ echo Press Enter to use default message, or enter custom commit message:
 set /p commit_msg=Commit message: 
 if "%commit_msg%"=="" set commit_msg=%default_commit_msg%
 
-REM Commit code
-echo.
-echo Committing code...
-git commit -m "%commit_msg%"
-if %errorlevel% neq 0 (
-    echo Error: Commit failed!
-    pause
-    exit /b 1
-)
+REM Check if there are changes to commit
+git status --porcelain > git_status_temp.txt
+for %%i in (git_status_temp.txt) do set "size=%%~zi"
 
-REM Push to remote repository
-echo.
-echo Pushing code to remote repository...
-git push origin master
-if %errorlevel% neq 0 (
-    echo Error: Push failed!
-    echo Please check network connection and GitHub permissions
+if %size% equ 0 (
+    echo Info: Working tree is clean, nothing to commit.
+    del git_status_temp.txt
+    
+    echo.
+    echo ============================================
+    echo Operation completed!
+    echo Repository URL: https://github.com/huangwei-gem/code
+    echo ============================================
     pause
-    exit /b 1
+    exit /b 0
+) else (
+    del git_status_temp.txt
+    
+    REM Commit code
+    echo.
+    echo Committing code...
+    git commit -m "%commit_msg%"
+    if %errorlevel% neq 0 (
+        echo Error: Commit failed!
+        pause
+        exit /b 1
+    )
+    
+    REM Push to remote repository
+    echo.
+    echo Pushing code to remote repository...
+    git push origin master
+    if %errorlevel% neq 0 (
+        echo Error: Push failed!
+        echo Please check network connection and GitHub permissions
+        pause
+        exit /b 1
+    )
+    
+    echo.
+    echo ============================================
+    echo Commit successful!
+    echo Commit message: %commit_msg%
+    echo Repository URL: https://github.com/huangwei-gem/code
+    echo ============================================
+    pause
 )
-
-echo.
-echo ============================================
-echo Commit successful!
-echo Commit message: %commit_msg%
-echo Repository URL: https://github.com/huangwei-gem/code
-echo ============================================
-pause

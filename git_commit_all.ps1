@@ -1,71 +1,79 @@
-# One-click commit all files to GitHub repository
-Write-Host "Starting one-click commit all files to GitHub repository..."
-Write-Host "Target repository: https://github.com/huangwei-gem/code"
+# Git一键提交所有文件脚本
+# 作者: huangwei-gem
+# 功能: 自动添加所有文件并提交到GitHub仓库
 
-# Check if in Git repository
-$gitCheck = git rev-parse --is-inside-work-tree 2>$null
-if ($gitCheck -ne "true") {
-    Write-Host "Error: Current directory is not a Git repository!"
+param(
+    [string]$commitMessage = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') 自动提交所有文件",
+    [switch]$push = $true,
+    [switch]$force = $false
+)
+
+Write-Host "=========================================" -ForegroundColor Cyan
+Write-Host "Git一键提交所有文件脚本" -ForegroundColor Green
+Write-Host "=========================================" -ForegroundColor Cyan
+Write-Host ""
+
+# 检查是否在Git仓库中
+if (-not (Test-Path ".git")) {
+    Write-Host "错误: 当前目录不是Git仓库!" -ForegroundColor Red
     exit 1
 }
 
-# Get current branch
-$branch = git rev-parse --abbrev-ref HEAD
-Write-Host "Current branch: $branch"
-
-# Get remote URL
-$remote = git config --get remote.origin.url
-Write-Host "Remote repository: $remote"
-
+# 显示当前状态
+Write-Host "当前Git状态:" -ForegroundColor Yellow
+git status --short
 Write-Host ""
-Write-Host "Checking file status..."
 
-# Check for changes
-$changes = git status --porcelain
-if ([string]::IsNullOrEmpty($changes)) {
-    Write-Host "Working directory is clean, no files to commit"
+# 添加所有文件
+Write-Host "正在添加所有文件..." -ForegroundColor Green
+if ($force) {
+    git add -A
+} else {
+    git add .
+}
+
+# 检查是否有文件需要提交
+$status = git status --porcelain
+if (-not $status) {
+    Write-Host "没有文件需要提交!" -ForegroundColor Yellow
     exit 0
 }
 
-Write-Host "Found file changes:"
-Write-Host $changes
-
+Write-Host "发现需要提交的文件:" -ForegroundColor Yellow
+Write-Host $status -ForegroundColor Gray
 Write-Host ""
-Write-Host "Adding all files..."
-git add -A
+
+# 提交文件
+Write-Host "正在提交文件..." -ForegroundColor Green
+git commit -m $commitMessage
+
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "Error: Failed to add files!"
+    Write-Host "提交失败!" -ForegroundColor Red
     exit 1
 }
-Write-Host "All files added"
 
+Write-Host "提交成功!" -ForegroundColor Green
+Write-Host "提交信息: $commitMessage" -ForegroundColor Gray
 Write-Host ""
-Write-Host "Committing files..."
-$timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-$message = "One-click commit: $timestamp"
-Write-Host "Commit message: $message"
 
-git commit -m $message
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "Error: Commit failed!"
-    exit 1
-}
-Write-Host "Files committed successfully"
-
-Write-Host ""
-Write-Host "Pushing to remote repository..."
-git push origin $branch
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "Regular push failed, trying with SSL verification disabled..."
-    git -c http.sslVerify=false push origin $branch
+# 推送到远程仓库
+if ($push) {
+    Write-Host "正在推送到远程仓库..." -ForegroundColor Green
+    if ($force) {
+        git push -f origin master
+    } else {
+        git push origin master
+    }
+    
     if ($LASTEXITCODE -ne 0) {
-        Write-Host "Error: Push failed!"
-        Write-Host "You may need to configure Git SSL settings or check your network connection."
+        Write-Host "推送失败! 请检查网络连接或远程仓库配置" -ForegroundColor Red
         exit 1
     }
+    
+    Write-Host "推送成功!" -ForegroundColor Green
 }
-Write-Host "Push successful!"
 
 Write-Host ""
-Write-Host "One-click commit completed!"
-Write-Host "All files successfully committed to GitHub!"
+Write-Host "=========================================" -ForegroundColor Cyan
+Write-Host "所有操作完成!" -ForegroundColor Green
+Write-Host "=========================================" -ForegroundColor Cyan

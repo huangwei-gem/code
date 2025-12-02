@@ -1,91 +1,96 @@
 @echo off
+chcp 65001 >nul
+:: Git一键提交所有文件脚本
+:: 作者: huangwei-gem
+:: 功能: 自动添加所有文件并提交到GitHub仓库
 
-echo Starting one-click commit all files to GitHub repository...
-echo Target repository: https://github.com/huangwei-gem/code
+echo =========================================
+echo Git一键提交所有文件脚本
+echo =========================================
+echo.
 
-:: Check if in Git repository
-git rev-parse --is-inside-work-tree >nul 2>&1
-if %errorlevel% neq 0 (
-    echo Error: Current directory is not a Git repository!
+:: 检查是否在Git仓库中
+if not exist ".git" (
+    echo 错误: 当前目录不是Git仓库!
     pause
     exit /b 1
 )
 
-:: Get current branch
-for /f "tokens=*" %%i in ('git rev-parse --abbrev-ref HEAD') do set currentBranch=%%i
-echo Current branch: %currentBranch%
+:: 获取当前日期时间作为默认提交信息
+for /f "tokens=2-4 delims=/ " %%a in ('date /t') do (set mydate=%%c-%%a-%%b)
+for /f "tokens=1-2 delims=/:" %%a in ('time /t') do (set mytime=%%a:%%b)
+set "default_msg=%mydate% %mytime% 自动提交所有文件"
 
-:: Check remote repository
-for /f "tokens=*" %%i in ('git config --get remote.origin.url') do set remoteUrl=%%i
-echo Remote repository: %remoteUrl%
+:: 询问提交信息
+set /p "commit_msg=请输入提交信息 (默认: %default_msg%): "
+if "%commit_msg%"=="" set "commit_msg=%default_msg%"
 
+:: 显示当前状态
 echo.
-echo Checking file status...
+echo 当前Git状态:
+git status --short
+echo.
 
-:: Check if there are any changes
-git diff --quiet && git diff --staged --quiet
-if %errorlevel% equ 0 (
-    echo Working directory is clean, no files to commit
+:: 添加所有文件
+echo 正在添加所有文件...
+git add .
+
+:: 检查是否有文件需要提交
+git status --porcelain > temp_git_status.txt
+for %%i in (temp_git_status.txt) do set size=%%~zi
+if %size% equ 0 (
+    echo.
+    echo 没有文件需要提交!
+    del temp_git_status.txt
     pause
     exit /b 0
 )
 
-:: Show file changes
-echo Found file changes:
-git status --short
-
 echo.
-echo Adding all files...
-git add -A
+echo 发现需要提交的文件:
+type temp_git_status.txt
+del temp_git_status.txt
+echo.
+
+:: 提交文件
+echo 正在提交文件...
+git commit -m "%commit_msg%"
+
 if %errorlevel% neq 0 (
-    echo Error: Failed to add files!
+    echo.
+    echo 提交失败!
     pause
     exit /b 1
 )
-echo All files added
-
-:: Generate commit message
-echo.
-echo Committing files...
-set timestamp=%date% %time%
-set commitMessage=One-click commit: %timestamp%
-echo Commit message: %commitMessage%
-
-:: Commit files
-git commit -m "%commitMessage%"
-if %errorlevel% neq 0 (
-    echo Error: Commit failed!
-    pause
-    exit /b 1
-)
-echo Files committed successfully
 
 echo.
-echo Pushing to remote repository...
+echo 提交成功!
+echo 提交信息: %commit_msg%
+echo.
 
-:: First try to pull remote changes
-echo Pulling remote changes first...
-git pull origin %currentBranch%
-if %errorlevel% neq 0 (
-    echo Pull failed, trying push anyway...
-)
-
-:: Then push to remote repository
-git push origin %currentBranch%
-if %errorlevel% neq 0 (
-    echo Regular push failed, trying with SSL verification disabled...
-    git -c http.sslVerify=false push origin %currentBranch%
+:: 推送到远程仓库
+set /p "push_confirm=是否推送到远程仓库? (y/n, 默认: y): "
+if /i "%push_confirm%"=="n" (
+    echo.
+    echo 跳过推送操作。
+) else (
+    echo.
+    echo 正在推送到远程仓库...
+    git push origin master
+    
     if %errorlevel% neq 0 (
-        echo Error: Push failed!
-        echo You may need to configure Git SSL settings or check your network connection.
+        echo.
+        echo 推送失败! 请检查网络连接或远程仓库配置
         pause
         exit /b 1
     )
+    
+    echo.
+    echo 推送成功!
 )
 
-echo Push successful!
-
 echo.
-echo One-click commit completed!
-echo All files successfully committed to GitHub!
+echo =========================================
+echo 所有操作完成!
+echo =========================================
 pause

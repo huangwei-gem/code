@@ -1,134 +1,90 @@
-# Git一键提交脚本使用说明 (更新版)
-
-这个仓库现在包含了一键提交所有文件到GitHub的脚本，方便你快速提交代码。
+# Git提交脚本使用说明 (更新版)
 
 ## 脚本列表
 
-### 1. git_commit_all.ps1 (PowerShell版本)
-- **功能**: 自动添加所有文件并提交到GitHub仓库
-- **特点**: 
-  - 支持自定义提交信息
-  - 自动推送到远程仓库
-  - 显示详细的操作状态
-  - 支持强制提交选项
+1. **git_commit_all.ps1** - PowerShell完整版
+   - 功能最全面，支持参数配置
+   - 支持自定义提交信息、推送选项、强制推送等
+   
+2. **git_commit_all_fixed.bat** - CMD批处理修复版 (推荐使用)
+   - 修复了中文编码问题
+   - 保持中文界面，易于理解
+   - 包含完整的提交和推送流程
+   
+3. **git_commit_all_en.bat** - CMD批处理英文版
+   - 全英文界面，完全避免编码问题
+   - 功能与中文版相同
+   
+4. **git_commit_large_files.ps1** - PowerShell LFS增强版
+   - 专门用于处理大文件的提交
+   - 集成Git LFS功能
+   
+5. **git_commit_simple.ps1** - PowerShell简化版
+   - 简化的工作流程
+   - 适用于快速提交场景
 
-**使用方法**:
+## 使用方法
+
+### PowerShell脚本使用方法：
 ```powershell
-# 基本使用（自动提交）
-powershell -ExecutionPolicy Bypass -File git_commit_all.ps1
+# 基本使用（使用默认提交信息）
+.\git_commit_all.ps1
 
 # 自定义提交信息
-powershell -ExecutionPolicy Bypass -File git_commit_all.ps1 -commitMessage "你的提交信息"
+.\git_commit_all.ps1 -commitMessage "添加新功能"
 
-# 只提交不推送
-powershell -ExecutionPolicy Bypass -File git_commit_all.ps1 -push:$false
+# 提交但不推送
+.\git_commit_all.ps1 -commitMessage "添加新功能" -push:$false
+
+# 强制推送（谨慎使用）
+.\git_commit_all.ps1 -commitMessage "重要更新" -force
 ```
 
-### 2. git_commit_all_fixed.bat (修复版CMD批处理版本)
-- **功能**: 自动添加所有文件并提交到GitHub仓库
-- **特点**:
-  - 修复了中文编码问题
-  - 交互式操作，询问提交信息
-  - 可选择是否推送到远程仓库
-  - 显示文件变更状态
-
-**使用方法**:
-```cmd
-# 直接双击运行或命令行执行
-git_commit_all_fixed.bat
+### CMD批处理脚本使用方法：
 ```
-
-### 3. git_commit_all_en.bat (英文版CMD批处理版本)
-- **功能**: 英文界面的自动提交脚本
-- **特点**:
-  - 全英文界面，避免编码问题
-  - 交互式操作
-  - 可选择是否推送到远程仓库
-
-**使用方法**:
-```cmd
-# 直接双击运行或命令行执行
-git_commit_all_en.bat
-```
-
-### 4. git_commit_large_files.ps1 (增强版 - 支持大文件)
-- **功能**: 支持大文件处理和Git LFS
-- **特点**:
-  - 自动检测大文件（默认>50MB）
-  - 自动配置Git LFS跟踪
-  - 支持大文件推送
-  - 适合包含大型数据文件的项目
-
-**使用方法**:
-```powershell
-# 基本使用
-powershell -ExecutionPolicy Bypass -File git_commit_large_files.ps1
-
-# 自定义大文件阈值（例如100MB）
-powershell -ExecutionPolicy Bypass -File git_commit_large_files.ps1 -largeFileSizeMB 100
-
-# 禁用LFS功能
-powershell -ExecutionPolicy Bypass -File git_commit_large_files.ps1 -useLFS:$false
+# 双击运行以下任一脚本：
+git_commit_all_fixed.bat  (推荐 - 修复版中文)
+git_commit_all_en.bat     (英文版 - 更稳定)
 ```
 
 ## 常见问题解决
 
-### 1. PowerShell执行策略问题
-如果遇到执行策略错误，请运行：
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
+### 1. 中文乱码问题
+如果在CMD中运行批处理脚本出现中文乱码，请使用我们提供的修复版本：
+- **git_commit_all_fixed.bat** - 修复了编码问题的中文版本
+- **git_commit_all_en.bat** - 全英文版本，完全避免编码问题
 
 ### 2. SSL证书问题
-如果遇到SSL证书问题，可以尝试：
+如果推送时遇到SSL证书错误，请按以下步骤解决：
+1. 访问 https://curl.se/ca/cacert.pem 下载证书文件
+2. 将cacert.pem保存到Git安装目录下
+3. 运行以下命令配置Git：
 ```bash
-git config --global http.sslVerify false
-# 或者使用SSH方式推送
-git remote set-url origin git@github.com:huangwei-gem/code.git
+git config --global http.sslCAInfo "/path/to/cacert.pem"
 ```
 
-### 3. Git LFS安装
-如果需要使用大文件功能，请先安装Git LFS：
-```bash
-git lfs install
-```
-
-## 使用建议
-
-1. **日常使用**: 推荐使用 `git_commit_all_fixed.bat`，操作简单直观且修复了编码问题
-2. **英文环境**: 推荐使用 `git_commit_all_en.bat`，避免编码问题
-3. **自动化脚本**: 推荐使用 `git_commit_all.ps1`，功能更强大
-4. **大文件项目**: 使用 `git_commit_large_files.ps1`，自动处理大文件
-5. **提交频率**: 建议经常提交，保持代码的备份和版本历史
-
-## 注意事项
-
-- 提交前请确保你的代码可以正常运行
-- 重要的提交请写清楚提交信息，方便后续查找
-- 定期推送到远程仓库，避免本地数据丢失
-- 对于敏感信息，请谨慎提交，必要时使用.gitignore文件
+### 3. 没有文件需要提交
+如果脚本提示"没有文件需要提交"，这是因为工作区是干净的，没有文件更改。请确保您已经修改或添加了文件再运行脚本。
 
 ## 项目结构
 
 ```
-c:\Users\35796\Documents\code\
-├── git_commit_all.ps1          # PowerShell一键提交脚本
-├── git_commit_all.bat          # 原始CMD一键提交脚本（可能有编码问题）
-├── git_commit_all_fixed.bat    # 修复版CMD一键提交脚本
-├── git_commit_all_en.bat       # 英文版CMD一键提交脚本
-├── git_commit_large_files.ps1  # 增强版脚本（支持LFS）
-├── .gitignore                  # Git忽略文件配置
-├── README.md                   # 项目说明
-├── crawler\                    # 爬虫项目目录
-│   ├── DrissionPage\           # DrissionPage相关项目
-│   ├── crawl4AI\               # AI爬虫框架
-│   ├── 7811游戏交易网\         # 7881.com爬虫项目
-│   ├── 优志愿-webpack逆向\     # webpack逆向项目
-│   ├── 猫眼电影实时票房\       # 字体加密破解项目
-│   └── ...
-└── test\                       # 测试目录
-    ├── crawl4ai_example.py
-    └── ...
+code/
+├── git_commit_all.ps1           # PowerShell完整版
+├── git_commit_all_fixed.bat     # CMD修复版（推荐）
+├── git_commit_all_en.bat        # CMD英文版
+├── git_commit_large_files.ps1   # PowerShell LFS增强版
+├── git_commit_simple.ps1        # PowerShell简化版
+├── Git提交脚本使用说明.md       # 本文档
+└── 其他项目文件...
 ```
 
-现在你可以使用这些脚本来快速提交你的爬虫项目到GitHub仓库了！
+## 使用建议
+
+1. **日常使用**：推荐使用 `git_commit_all_fixed.bat`，双击即可运行
+2. **高级用户**：可使用 `git_commit_all.ps1`，支持更多参数配置
+3. **大文件处理**：使用 `git_commit_large_files.ps1`
+4. **快速提交**：使用 `git_commit_simple.ps1`
+5. **遇到编码问题**：切换到 `git_commit_all_en.bat`
+
+所有脚本都会自动检查Git仓库状态，只有在有文件更改时才会执行提交操作。

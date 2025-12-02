@@ -40,15 +40,9 @@ if %errorlevel% equ 0 (
     exit /b 0
 )
 
-REM Generate timestamp for commit message
-for /f "tokens=2 delims==" %%a in ('wmic OS Get localdatetime /value') do set "dt=%%a"
-set "YYYY=%dt:~0,4%"
-set "MM=%dt:~4,2%"
-set "DD=%dt:~6,2%"
-set "HH=%dt:~8,2%"
-set "Min=%dt:~10,2%"
-set "Sec=%dt:~12,2%"
-set "default_commit_msg=Auto commit %YYYY%-%MM%-%DD% %HH%:%Min%:%Sec%"
+REM Generate timestamp for commit message using PowerShell
+for /f %%i in ('powershell -command "Get-Date -Format 'yyyy-MM-dd HH:mm:ss'"') do set "timestamp=%%i"
+set "default_commit_msg=Auto commit %timestamp%"
 
 REM Prompt user for commit message or use default
 echo.

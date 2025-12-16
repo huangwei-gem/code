@@ -1,0 +1,15 @@
+# 项目依赖库
+# Python版本要求：>=3.7
+
+# 基础库
+requests>=2.31.0
+
+# 异步支持
+aiohttp>=3.8.5
+
+# 加密解密
+pycryptodome>=3.19.0
+cryptography>=41.0.0
+
+# 代码风格检查
+flake8>=6.0.0

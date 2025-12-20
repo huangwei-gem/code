@@ -1,0 +1,10 @@
+### 发送POST请求到/send端点
+POST http://localhost:3000/send
+Content-Type: application/json
+
+{
+    "callName": "sign",
+    "args": [1, 2]
+}
+
+### 查看响应（发送请求后自动显示）
